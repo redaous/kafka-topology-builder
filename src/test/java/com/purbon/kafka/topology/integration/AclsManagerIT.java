@@ -1,6 +1,7 @@
 package com.purbon.kafka.topology.integration;
 
 import com.purbon.kafka.topology.AclsManager;
+import com.purbon.kafka.topology.SASLKafkaContainer;
 import com.purbon.kafka.topology.TopologyBuilderAdminClient;
 import com.purbon.kafka.topology.model.Project;
 import com.purbon.kafka.topology.model.Topic;
@@ -12,29 +13,40 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.AdminClientConfig;
-import org.apache.kafka.common.acl.AccessControlEntry;
 import org.apache.kafka.common.acl.AccessControlEntryFilter;
 import org.apache.kafka.common.acl.AclBinding;
 import org.apache.kafka.common.acl.AclBindingFilter;
 import org.apache.kafka.common.acl.AclOperation;
 import org.apache.kafka.common.acl.AclPermissionType;
-import org.apache.kafka.common.resource.PatternType;
-import org.apache.kafka.common.resource.ResourcePattern;
 import org.apache.kafka.common.resource.ResourcePatternFilter;
 import org.apache.kafka.common.resource.ResourceType;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class AclsManagerIT {
 
   private static AdminClient kafkaAdminClient;
   private AclsManager aclsManager;
+
+  private static SASLKafkaContainer container;
+
+  @BeforeClass
+  public static void setup() {
+
+    container =  new SASLKafkaContainer("5.3.1");
+    container.start();
+  }
+
+  @AfterClass
+  public static void teardown() {
+    container.stop();
+  }
 
   @Before
   public void before() {
