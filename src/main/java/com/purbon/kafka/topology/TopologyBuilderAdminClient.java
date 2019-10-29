@@ -213,4 +213,7 @@ public class TopologyBuilderAdminClient {
   }
 
 
+  public void setAclsForStreamsApp(String principal, String topicPrefix, List<String> readTopics, List<String> writeTopics) {
+    // To be implemented
+  }
 }

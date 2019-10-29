@@ -3,7 +3,9 @@ package com.purbon.kafka.topology;
 import com.purbon.kafka.topology.model.Project;
 import com.purbon.kafka.topology.model.Topic;
 import com.purbon.kafka.topology.model.Topology;
+import com.purbon.kafka.topology.model.users.KStream;
 import java.util.Collection;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -44,10 +46,30 @@ public class AclsManager {
                     .collect(Collectors.toList());
                 setAclsForProducers(producers, fullTopicName);
 
+                project
+                    .getStreams()
+                    .stream()
+                    .forEach(new Consumer<KStream>() {
+                      @Override
+                      public void accept(KStream app) {
+
+                        List<String> readTopics = app.getTopics().get(KStream.READ_TOPICS);
+                        List<String> writeTopics = app.getTopics().get(KStream.WRITE_TOPICS);
+                        String topicPrefix = project.buildTopicPrefix(topology);
+                        setAclsForStreamsApp(app.getPrincipal(), topicPrefix, readTopics, writeTopics);
+                      }
+                    });
+
               }
             });
           }
         });
+  }
+
+  private void setAclsForStreamsApp(String principal, String topicPrefix, List<String> readTopics, List<String> writeTopics) {
+
+    adminClient
+        .setAclsForStreamsApp(principal, topicPrefix, readTopics, writeTopics);
   }
 
   public void setAclsForConsumers(Collection<String> principals, String topic) {
@@ -57,5 +79,6 @@ public class AclsManager {
   public void setAclsForProducers(Collection<String> principals, String topic) {
     principals.forEach(principal -> adminClient.setAclsForProducer(principal, topic));
   }
+
 
 }
