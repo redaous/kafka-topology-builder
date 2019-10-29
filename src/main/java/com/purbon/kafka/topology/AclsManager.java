@@ -48,13 +48,13 @@ public class AclsManager {
               }
             });
             // Setup global Kafka Stream Access control lists
+            String topicPrefix = project.buildTopicPrefix(topology);
             project
                 .getStreams()
                 .stream()
                 .forEach(app -> {
                   List<String> readTopics = app.getTopics().get(KStream.READ_TOPICS);
                   List<String> writeTopics = app.getTopics().get(KStream.WRITE_TOPICS);
-                  String topicPrefix = project.buildTopicPrefix(topology);
                   setAclsForStreamsApp(app.getPrincipal(), topicPrefix, readTopics, writeTopics);
                 });
           }
