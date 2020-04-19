@@ -71,4 +71,5 @@ projects:
     config:
       replication.factor: "2"
       num.partitions: "3"
+
 ```
