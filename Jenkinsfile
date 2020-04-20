@@ -3,6 +3,7 @@ pipeline {
 
    tools {
         maven 'localMaven'
+        jdk 'localJDK'
     }
    parameters {
      string(name: 'Kafka_Brokers',defaultValue: '192.168.1.135', description: 'Kafka Cluster to Apply the Topology on')
@@ -24,6 +25,9 @@ pipeline {
                 }
             }
         }
-          
+       stage ('Apply Acls on kafka brokers'){
+         sh ' java -jar kafka-topology-builder-jar-with-dependencies.jar --clientConfig myparams/topology-builder-sasl-plain.properties  --topology myparams/descriptor.yaml  --brokers 192.168.1.135 --allowDelete '
+       }
+  
     }
 }

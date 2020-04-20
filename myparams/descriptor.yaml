@@ -1,0 +1,31 @@
+---
+team: "ocf"
+source: "prod"
+projects:
+  - name: "edi"
+    zookeepers: []
+    consumers:
+      - principal: "User:ocfconsumer"
+      - principal: "User:merchconsumer"
+    producers:
+      - principal: "User:ocfproducer"
+      - principal: "User:merchproducer"
+    streams: []
+    connectors: []
+    topics:
+      - name: "inventory"
+        config:
+          replication.factor: "1"
+          num.partitions: "15"
+  - name: "sis"
+    zookeepers: []
+    consumers: []
+    producers: []
+    streams: []
+    connectors: []
+    topics:
+      - dataType: "avro"
+        name: "test"
+        config:
+          replication.factor: "1"
+          num.partitions: "3"
