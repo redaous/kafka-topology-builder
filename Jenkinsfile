@@ -25,6 +25,18 @@ pipeline {
                 }
             }
         }
+        stage('Copy Archive') {
+         steps {
+             script {
+                step ([$class: 'CopyArtifact',
+                      projectName: 'kafka-topic-acl-pipeline',
+                      filter: "**/target/*.jar",
+                      target: '/opt/topology']);
+            }
+        }
+       }
+
+          
        stage ('Apply Acls on kafka brokers'){
          steps {
          sh ' java -jar **/target/kafka-topology-builder-jar-with-dependencies.jar --clientConfig myparams/topology-builder-sasl-plain.properties  --topology myparams/descriptor.yaml  --brokers 192.168.1.135 --allowDelete '
