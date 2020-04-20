@@ -39,7 +39,7 @@ pipeline {
           
        stage ('Apply Acls on kafka brokers'){
          steps {
-         sh ' java -jar **/target/kafka-topology-builder-jar-with-dependencies.jar --clientConfig myparams/topology-builder-sasl-plain.properties  --topology myparams/descriptor.yaml  --brokers 192.168.1.135 --allowDelete '
+         sh ' java -jar /opt/topology/target/kafka-topology-builder-jar-with-dependencies.jar   --clientConfig myparams/topology-builder-sasl-plain.properties  --topology myparams/descriptor.yaml  --brokers 192.168.1.135 --allowDelete '
        }
     }
     }
