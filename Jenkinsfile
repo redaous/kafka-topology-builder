@@ -8,7 +8,7 @@ pipeline {
      string(name: 'Kafka_Brokers',description: 'Kafka Cluster to Apply the Topology on')
    }
 
-   trigers {
+   triggers {
       pollSCM ('* * * * *')
    }
     
