@@ -4,18 +4,15 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Building..'
+              sh 'mvn clean package'  
+            }
+            post {
+                success {
+                   echo "Archiving the Topology Jar file ..."
+                   archiveArtifacts artifacts: '**/target/*.jar'
+                }
             }
         }
-        stage('Test') {
-            steps {
-                echo 'Testing..'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
-            }
-        }
+          
     }
 }
