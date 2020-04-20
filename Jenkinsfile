@@ -4,8 +4,15 @@ pipeline {
    tools {
         maven 'localMaven'
     }
+   parameters {
+     string(name: 'Kafka_Brokers',description: 'Kafka Cluster to Apply the Topology on')
+   }
 
-    stages {
+   trigers {
+      pollSCM ('* * * * *')
+   }
+    
+   stages {
         stage('Build') {
             steps {
               sh 'mvn clean package'  
