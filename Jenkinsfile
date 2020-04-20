@@ -5,7 +5,7 @@ pipeline {
         maven 'localMaven'
     }
    parameters {
-     string(name: 'Kafka_Brokers',description: 'Kafka Cluster to Apply the Topology on')
+     string(name: 'Kafka_Brokers',defaultValue: '192.168.1.135', description: 'Kafka Cluster to Apply the Topology on')
    }
 
    triggers {
